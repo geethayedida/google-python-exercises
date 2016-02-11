@@ -36,10 +36,11 @@ Optional: define a helper function to avoid code duplication inside
 print_words() and print_top().
 
 """
+import sys
 
-def print_words():
+def print_words(filename):
     dic = {}
-    f = open("C:\\e\\google-python-exercises\\basic\\alice.txt", "rU")
+    f = open(filename, "rU")
     for line in f:
         line = line.lower()
         lists = line.split()
@@ -56,10 +57,10 @@ def print_words():
 # +++your code here+++
     
 
-def print_top():
+def print_top(filename):
     dic = {}
     count = 0
-    f = open("C:\\e\\google-python-exercises\\basic\\alice.txt", "rU")
+    f = open(filename, "rU")
     for line in f:
         line = line.lower()
         lists = line.split()
@@ -75,6 +76,28 @@ def print_top():
             count = count + 1
     
     f.close()
+def print_top(filename):
+    dic = {}
+    f = open(filename, "rU")
+    for line in f:
+        line = line.lower()
+        lists = line.split()
+        for i in lists:
+            if i not in dic:
+                    dic[i] = 1
+                    
+            elif i in dic:
+                    dic[i] = dic[i]+1
+    i = 0
+    
+    items = sorted(dic.items(), key=lambda x: x[1], reverse = True)
+    for item in items[:20]:
+        print item[0] + ': ' + str(item[1]) + ' times'
+        i += 1
+       
+    
+    f.close()
+
 
     
 # Define print_words(filename) and print_top(filename) functions.
@@ -87,8 +110,19 @@ def print_top():
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 def main():
-    print_words()
-    print_top()
+  if len(sys.argv) != 3:
+    print 'usage: ./wordcount.py {--count | --topcount} file'
+    sys.exit(1)
+
+  option = sys.argv[1]
+  filename = sys.argv[2]
+  if option == '--count':
+    print_words(filename)
+  elif option == '--topcount':
+    print_top(filename)
+  else:
+    print 'unknown option: ' + option
+    sys.exit(1)
 
 if __name__ == '__main__':
   main()
